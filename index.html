@@ -8,8 +8,22 @@
 </head>
 <body>
   <h1>Sudoku</h1>
+
+  <label for="difficulty">Difficulty:</label>
+  <select id="difficulty" onchange="loadPuzzle()">
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+  </select>
+
   <div id="sudoku-board"></div>
-  <button onclick="checkBoard()">Check</button>
+
+  <div class="buttons">
+    <button onclick="checkBoard()">Check</button>
+    <button onclick="loadPuzzle()">New Puzzle</button>
+  </div>
+
+  <script src="sudoku-generator.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
