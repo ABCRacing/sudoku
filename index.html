@@ -1,29 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sudoku Game</title>
-  <link rel="stylesheet" href="style.css"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sudoku Test</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  #sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 40px);
+    grid-template-rows: repeat(9, 40px);
+    gap: 0; /* we’ll use borders */
+    margin-bottom: 20px;
+  }
+
+  #sudoku-board input {
+    width: 38px;
+    height: 38px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #999;
+    box-sizing: border-box;
+  }
+
+  /* Thicker right borders for 3x3 boxes */
+  #sudoku-board input:nth-child(3n) {
+    border-right: 3px solid #000;
+  }
+
+  /* Thicker bottom borders for 3x3 boxes */
+  #sudoku-board input:nth-child(n+19):nth-child(-n+27),
+  #sudoku-board input:nth-child(n+46):nth-child(-n+54),
+  #sudoku-board input:nth-child(n+73):nth-child(-n+81) {
+    border-bottom: 3px solid #000;
+  }
+
+  /* Thicker left border for the first column of each 3x3 box */
+  #sudoku-board input:nth-child(1),
+  #sudoku-board input:nth-child(10),
+  #sudoku-board input:nth-child(19),
+  #sudoku-board input:nth-child(28),
+  #sudoku-board input:nth-child(37),
+  #sudoku-board input:nth-child(46),
+  #sudoku-board input:nth-child(55),
+  #sudoku-board input:nth-child(64),
+  #sudoku-board input:nth-child(73) {
+    border-left: 3px solid #000;
+  }
+
+  /* Thicker top border for the first row */
+  #sudoku-board input:nth-child(-n+9) {
+    border-top: 3px solid #000;
+  }
+
+  #sudoku-board input:disabled {
+    background-color: #eee;
+    font-weight: bold;
+  }
+
+  button {
+    padding: 5px 10px;
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+</style>
 </head>
 <body>
-  <h1>Sudoku</h1>
+<h1>Sudoku Test</h1>
+<div id="sudoku-board"></div>
+<button id="check-btn">Check</button>
 
-  <label for="difficulty">Difficulty:</label>
-  <select id="difficulty" onchange="loadPuzzle()">
-    <option value="easy">Easy</option>
-    <option value="medium">Medium</option>
-    <option value="hard">Hard</option>
-  </select>
+<script>
+window.onload = function() {
+  const board = document.getElementById("sudoku-board");
 
-  <div id="sudoku-board"></div>
+  // Hard-coded puzzle (0 = empty)
+  const puzzle = [
+    5,3,0,0,7,0,0,0,0,
+    6,0,0,1,9,5,0,0,0,
+    0,9,8,0,0,0,0,6,0,
+    8,0,0,0,6,0,0,0,3,
+    4,0,0,8,0,3,0,0,1,
+    7,0,0,0,2,0,0,0,6,
+    0,6,0,0,0,0,2,8,0,
+    0,0,0,4,1,9,0,0,5,
+    0,0,0,0,8,0,0,7,9
+  ];
 
-  <div class="buttons">
-    <button onclick="checkBoard()">Check</button>
-    <button onclick="loadPuzzle()">New Puzzle</button>
-  </div>
+  const solution = [
+    5,3,4,6,7,8,9,1,2,
+    6,7,2,1,9,5,3,4,8,
+    1,9,8,3,4,2,5,6,7,
+    8,5,9,7,6,1,4,2,3,
+    4,2,6,8,5,3,7,9,1,
+    7,1,3,9,2,4,8,5,6,
+    9,6,1,5,3,7,2,8,4,
+    2,8,7,4,1,9,6,3,5,
+    3,4,5,2,8,6,1,7,9
+  ];
 
-  <script src="sudoku-generator.js"></script>
-  <script src="script.js"></script>
+  // Create the Sudoku grid
+  for (let i = 0; i < 81; i++) {
+    const cell = document.createElement("input");
+    cell.type = "text";
+    cell.maxLength = 1;
+
+    if (puzzle[i] !== 0) {
+      cell.value = puzzle[i];
+      cell.disabled = true;
+    }
+
+    board.appendChild(cell);
+  }
+
+  // Check button
+  const checkBtn = document.getElementById("check-btn");
+  checkBtn.onclick = function() {
+    const cells = board.querySelectorAll("input");
+    let allCorrect = true;
+
+    cells.forEach((cell, index) => {
+      if (!cell.disabled) {
+        const val = parseInt(cell.value);
+        if (val !== solution[index]) {
+          cell.style.backgroundColor = "#ffdddd"; // wrong
+          allCorrect = false;
+        } else {
+          cell.style.backgroundColor = "white"; // correct
+        }
+      }
+    });
+
+    if (allCorrect) {
+      alert("Congratulations! Puzzle solved correctly!");
+    } else {
+      alert("Some cells are incorrect or empty. Keep trying!");
+    }
+  };
+};
+</script>
 </body>
 </html>

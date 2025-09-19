@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sudoku Test</title>
+</head>
+<body>
+<h1>Sudoku Test</h1>
+<div id="sudoku-board"></div>
+<script>
+  console.log("Script running"); // Check if this shows up in console
+  const board = document.getElementById("sudoku-board");
+  for(let i=0;i<9;i++){
+    const cell = document.createElement("input");
+    cell.value = i+1;
+    board.appendChild(cell);
+  }
+</script>
+</body>
+</html>
